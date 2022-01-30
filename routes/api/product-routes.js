@@ -74,7 +74,7 @@ router.get('/:id', (req, res) => {
         });
 });
 
-// create new product
+//POST new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -106,10 +106,14 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+//PUT product
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
+    product_name: req.body.product_name,
+    price: req.body.price,
+    stock: req.body.stock,
+    category_id: req.body.category_id,
     where: {
       id: req.params.id,
     },
