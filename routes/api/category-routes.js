@@ -28,9 +28,38 @@ router.get('/', (req, res) => {
         });
 });
 
+//GET one category
 router.get('/:id', (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
+    Category.findOne({
+        attributes: [
+            "id",
+            "category_name"
+        ],
+        where: {
+            id: req.params.id
+        },
+        include: [
+            {
+                model: Product,
+                attributes: [
+                    "product_name",
+                    "price",
+                    "stock"
+                ]
+            }
+        ]
+    })
+        .then(dbCatData => {
+            if (!dbCatData) {
+                res.status(404).json({ message: "Category not found!" });
+                return;
+            }
+            res.json(dbCatData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
 router.post('/', (req, res) => {
